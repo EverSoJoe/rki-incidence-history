@@ -17,7 +17,10 @@ def getdata(file):
     data = {}
     for row in sheet.iter_rows(min_row=6, values_only=True):
         if not row[1] == None and row[2] in filter:
-            data[row[1]] = row[-14:-1]
+            if row[-1] == None:
+                data[row[1]] = row[-15:-1]
+            else:
+                data[row[1]] = row[-14:]
     xlsx.close()
     return data
 
@@ -28,6 +31,31 @@ def generatehtml(data, path):
             '<html>',
             '   <head>',
             '       <title>RKI Inzidenz Historie</title>',
+            '       <style>',
+            '           html {',
+            '               background: #1D1F21;',
+            '               color: #C5C8C6;',
+            '               font-family: sans-serif;',
+            '               text-align: center;',
+            '           }',
+            '           a {',
+            '               text-decoration: none;',
+            '               color: #81A2BE;',
+            '           }'
+            '           ul {',
+            '               list-style-type: none;',
+            '               padding: 0;',
+            '           }',
+            '           .red {',
+            '               color: #CC6666;',
+            '           }',
+            '           .orange {',
+            '               color: #F0C674;',
+            '           }',
+            '           .green {',
+            '               color: #b5db68;',
+            '           }',
+            '       </style>',
             '   </head>',
             '   <body>',
             '       <content>',
@@ -37,7 +65,7 @@ def generatehtml(data, path):
         for lk in data:
             id = urllib.parse.quote_plus(lk)
             f.write('           <h2 id="%s"><a href="#%s">%s</a></h2>\n' %(id, id, lk))
-            f.write('           <ul>')
+            f.write('           <ul>\n')
             for iz in data[lk]:
                 if iz <= 50:
                     color = "green"
@@ -45,8 +73,8 @@ def generatehtml(data, path):
                     color = "orange"
                 else:
                     color = "red"
-                f.write('               <li class="%s">%1.2f</li>' %(color, iz))
-            f.write('           </ul>')
+                f.write('               <li class="%s">%1.2f</li>\n' %(color, iz))
+            f.write('           </ul>\n')
 
         f.write('\n'.join([
             '       </content>',
@@ -60,4 +88,4 @@ if __name__ == "__main__":
         file = getrkixlsx("https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Daten/Fallzahlen_Kum_Tab.xlsx?__blob=publicationFile", tempdir)
         data = getdata(file)
         html = generatehtml(data, tempdir)
-        open('html.html', 'w').write((open(html).read()))
+        open('../index.html', 'w').write((open(html).read()))
