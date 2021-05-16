@@ -37,8 +37,9 @@ def generatehtml(data, path):
             '<html>',
             '   <head>',
             '       <title>RKI Inzidenz Historie</title>',
+            '       <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">',
             '       <style>',
-            '           html {',
+            '           html,body {',
             '               background: #1D1F21;',
             '               color: #C5C8C6;',
             '               font-family: sans-serif;',
@@ -63,17 +64,16 @@ def generatehtml(data, path):
             '       </style>',
             '   </head>',
             '   <body>',
-            '       <content>',
-            '           <h1>RKI Inzidenz Historie</h1>', 
-            '           <p>RKI Stand: %s' %(data['date'][-1].strftime("%d.%m.%Y")), '<br>'
-            '           Letztes Update: %s</p>' %(datetime.datetime.now()), ''
+            '       <h1>RKI Inzidenz Historie</h1>', 
+            '       <p>RKI Stand: %s' %(data['date'][-1].strftime("%d.%m.%Y")), '<br>'
+            '       Letztes Update: %s</p>' %(datetime.datetime.now()), ''
         ]))
 
         for lk in data:
             if lk == 'date': continue
             id = urllib.parse.quote_plus(lk)
-            f.write('           <h2 id="%s"><a href="#%s">%s</a></h2>\n' %(id, id, lk))
-            f.write('           <table>\n')
+            f.write('       <h2 id="%s"><a href="#%s">%s</a></h2>\n' %(id, id, lk))
+            f.write('       <table>\n')
             for i in range(len(data[lk])):
                 if data[lk][i] <= 50:
                     color = "green"
@@ -81,14 +81,13 @@ def generatehtml(data, path):
                     color = "orange"
                 else:
                     color = "red"
-                f.write('               <tr>\n')
-                f.write('                   <th>%s</th>\n' %(data['date'][i].strftime("%d.%m.")))
-                f.write('                   <th class="%s">%1.2f</th>\n' %(color, data[lk][i]))
-                f.write('               </tr>\n')
-            f.write('           </table>\n')
+                f.write('           <tr>\n')
+                f.write('               <th>%s</th>\n' %(data['date'][i].strftime("%d.%m.")))
+                f.write('               <th class="%s">%1.2f</th>\n' %(color, data[lk][i]))
+                f.write('           </tr>\n')
+            f.write('       </table>\n')
 
         f.write('\n'.join([
-            '       </content>',
             '   </body>',
             '</html>'
         ]))
@@ -99,4 +98,4 @@ if __name__ == "__main__":
         file = getrkixlsx("https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Daten/Fallzahlen_Kum_Tab.xlsx?__blob=publicationFile", tempdir)
         data = getdata(file)
         html = generatehtml(data, tempdir)
-        open('../index.html', 'w').write((open(html).read()))
+        open('index.html', 'w').write((open(html).read()))
