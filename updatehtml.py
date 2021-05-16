@@ -2,8 +2,9 @@ import openpyxl
 import requests
 import tempfile
 import urllib.parse
+import datetime
 
-filter = [9777,9190,9762]
+filter = ['LKNR',9777,9190,9762]
 
 def getrkixlsx(url, path):
     file = '%s/inzidenzen.xlsx' %(path)
@@ -15,12 +16,17 @@ def getdata(file):
     xlsx = openpyxl.load_workbook(file, read_only=True)
     sheet = xlsx['LK_7-Tage-Inzidenz']
     data = {}
-    for row in sheet.iter_rows(min_row=6, values_only=True):
+    for row in sheet.iter_rows(min_row=5, values_only=True):
         if not row[1] == None and row[2] in filter:
-            if row[-1] == None:
-                data[row[1]] = row[-15:-1]
+            if row[2] == 'LKNR':
+                index = 'date'
             else:
-                data[row[1]] = row[-14:]
+                index = row[1]
+
+            if row[-1] == None:
+                data[index] = row[-15:-1]
+            else:
+                data[index] = row[-14:]
     xlsx.close()
     return data
 
@@ -42,9 +48,8 @@ def generatehtml(data, path):
             '               text-decoration: none;',
             '               color: #81A2BE;',
             '           }',
-            '           ul {',
-            '               list-style-type: none;',
-            '               padding: 0;',
+            '           table {',
+            '               margin: 1em auto;',
             '           }',
             '           .red {',
             '               color: #CC6666;',
@@ -59,22 +64,28 @@ def generatehtml(data, path):
             '   </head>',
             '   <body>',
             '       <content>',
-            '           <h1>RKI Inzidenz Historie nach Landkreisen und Städten</h1>', ''
+            '           <h1>RKI Inzidenz Historie</h1>', 
+            '           <p>RKI Stand: %s' %(data['date'][-1].strftime("%d.%m.%Y")), '<br>'
+            '           Letztes Update: %s</p>' %(datetime.datetime.now()), ''
         ]))
 
         for lk in data:
+            if lk == 'date': continue
             id = urllib.parse.quote_plus(lk)
             f.write('           <h2 id="%s"><a href="#%s">%s</a></h2>\n' %(id, id, lk))
-            f.write('           <ul>\n')
-            for iz in data[lk]:
-                if iz <= 50:
+            f.write('           <table>\n')
+            for i in range(len(data[lk])):
+                if data[lk][i] <= 50:
                     color = "green"
-                elif iz <= 100:
+                elif data[lk][i] <= 100:
                     color = "orange"
                 else:
                     color = "red"
-                f.write('               <li class="%s">%1.2f</li>\n' %(color, iz))
-            f.write('           </ul>\n')
+                f.write('               <tr>\n')
+                f.write('                   <th>%s</th>\n' %(data['date'][i].strftime("%d.%m.")))
+                f.write('                   <th class="%s">%1.2f</th>\n' %(color, data[lk][i]))
+                f.write('               </tr>\n')
+            f.write('           </table>\n')
 
         f.write('\n'.join([
             '       </content>',
