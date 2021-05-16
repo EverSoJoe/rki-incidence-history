@@ -41,7 +41,7 @@ def generatehtml(data, path):
             '           a {',
             '               text-decoration: none;',
             '               color: #81A2BE;',
-            '           }'
+            '           }',
             '           ul {',
             '               list-style-type: none;',
             '               padding: 0;',
