@@ -6,7 +6,7 @@ import urllib.parse
 import openpyxl
 
 filtered = True
-filter = ['LKNR',9777,9190,9762, 9763,9780]
+filter = [9777,9190,9762, 9763,9780]
 
 def getrkixlsx(url, path):
     file = '%s/inzidenzen.xlsx' %(path)
@@ -19,7 +19,7 @@ def getdata(file):
     sheet = xlsx['LK_7-Tage-Inzidenz']
     data = {}
     for row in sheet.iter_rows(min_row=5, values_only=True):
-        if not row[1] == None and (not filtered or row[2] in filter):
+        if not row[1] == None and (not filtered or row[2] in filter + ['LKNR']):
             if row[2] == 'LKNR':
                 index = 'date'
             else:
