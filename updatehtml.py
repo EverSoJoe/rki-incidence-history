@@ -5,8 +5,8 @@ import urllib.parse
 
 import openpyxl
 
-filtered = True
-filter = ['LKNR',9777,9190,9762, 9763]
+filtered = False
+filter = ['LKNR',9777,9190,9762, 9763,9780]
 
 def getrkixlsx(url, path):
     file = '%s/inzidenzen.xlsx' %(path)
@@ -73,8 +73,8 @@ def generatehtml(data, path):
 
         for lk in data:
             if lk == 'date': continue
-            id = urllib.parse.quote_plus(lk[3:])
-            f.write('       <h2 id="%s"><a href="#%s">%s</a></h2>\n' %(id, id, lk[3:]))
+            id = urllib.parse.quote_plus(' '.join(lk.split(' ')[1:]))
+            f.write('       <h2 id="%s"><a href="#%s">%s</a></h2>\n' %(id, id, ' '.join(lk.split(' ')[1:])))
             f.write('       <table>\n')
             for i in range(len(data[lk])):
                 if data[lk][i] <= 50:
