@@ -1,7 +1,7 @@
 import openpyxl
 import requests
 import tempfile
-import urllib.parse
+import urllib
 import datetime
 
 filtered = True
