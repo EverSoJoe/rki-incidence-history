@@ -36,7 +36,8 @@ def generatehtml(data, path):
     html = '%s/index.html' %(path)
     with open(html, 'a') as f:
         f.write('\n'.join([
-            '<html>',
+            '<!DOCTYPE html>',
+            '<html lang="de">',
             '   <head>',
             '       <title>RKI Inzidenz Historie</title>',
             '       <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">',
