@@ -6,7 +6,7 @@ import urllib.parse
 import openpyxl
 
 filtered = True
-filter = ['LKNR',9777,9190,9762]
+filter = ['LKNR',9777,9190,9762, 9763]
 
 def getrkixlsx(url, path):
     file = '%s/inzidenzen.xlsx' %(path)
