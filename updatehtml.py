@@ -66,7 +66,7 @@ def generatehtml(data, path):
             '   </head>',
             '   <body>',
             '       <h1>RKI Inzidenz Historie</h1>', 
-            '       <p>RKI Stand: %s' %(data['date'][-1].strftime("%d.%m.%Y")), '<br>'
+            '       <p>RKI Stand: %s' %(data['date'][0].strftime("%d.%m.%Y")), '<br>'
             '       Letztes Update: %s</p>' %(datetime.datetime.now()), ''
         ]))
 
