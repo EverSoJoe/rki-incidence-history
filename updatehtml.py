@@ -4,6 +4,7 @@ import tempfile
 import urllib.parse
 import datetime
 
+filtered = True
 filter = ['LKNR',9777,9190,9762]
 
 def getrkixlsx(url, path):
@@ -17,16 +18,16 @@ def getdata(file):
     sheet = xlsx['LK_7-Tage-Inzidenz']
     data = {}
     for row in sheet.iter_rows(min_row=5, values_only=True):
-        if not row[1] == None and row[2] in filter:
+        if not row[1] == None and (not filtered or row[2] in filter):
             if row[2] == 'LKNR':
                 index = 'date'
             else:
                 index = row[1]
 
             if row[-1] == None:
-                data[index] = row[-15:-1]
+                data[index] = (row[-15:-1])[::-1]
             else:
-                data[index] = row[-14:]
+                data[index] = (row[-14:])[::-1]
     xlsx.close()
     return data
 
