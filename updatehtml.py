@@ -21,10 +21,13 @@ def getdata(file):
     elif 'LK_7-Tage-Inzidenz' in xlsx:
         sheet = xlsx['LK_7-Tage-Inzidenz']
     data = {}
-    negCol = -1
+    negCol = None
     while data == {}:
         if sheet[5][negCol].value == None:
-            negCol -= 1
+            if negCol == None:
+                negCol = -1
+            else:
+                negCol -= 1
         else:
             date = sheet[5][(negCol-14):negCol]
             data['date'] = [x.value for x in date][::-1]
