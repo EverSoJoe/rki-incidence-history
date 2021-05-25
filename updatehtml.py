@@ -27,6 +27,7 @@ def getdata(file):
             negCol -= 1
         else:
             data['date'] = sheet[5][(negCol-14):negCol]
+    print(data['date'])
 
     for row in sheet.iter_rows(min_row=6, values_only=True):
         if not row[1] == None and (not filtered or row[2] in filter + ['LKNR']):
