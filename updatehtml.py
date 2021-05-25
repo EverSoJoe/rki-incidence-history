@@ -15,12 +15,13 @@ def getrkixlsx(url, path):
     return file
 
 def getdata(file):
+    data = {}
     xlsx = openpyxl.load_workbook(file, read_only=True)
     if 'LK_7-Tage-Fallzahlen (fixiert)' in xlsx:
         sheet = xlsx['LK_7-Tage-Inzidenz (fixiert)']
     elif 'LK_7-Tage-Inzidenz' in xlsx:
         sheet = xlsx['LK_7-Tage-Inzidenz']
-    data = {}
+
     if sheet[5][-1].value == None:
         negCol = -2
         while sheet[5][negCol].value == None:
