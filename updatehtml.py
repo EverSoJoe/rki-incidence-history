@@ -34,7 +34,7 @@ def getdata(file):
     for row in sheet.iter_rows(min_row=6, values_only=True):
         if not row[1] == None and (not filtered or row[2] in filter + ['LKNR']):
             index = row[1]
-            data[index] = (row[(negCol-14):negCol])[::-1]
+            data[index] = (row[((0 if negCol == None else negCol)-14):negCol])[::-1]
     xlsx.close()
     return data
 
