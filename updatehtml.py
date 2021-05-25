@@ -34,6 +34,7 @@ def getdata(file):
             index = row[1]
             data[index] = (row[(negCol-14):negCol])[::-1]
     xlsx.close()
+    print(data)
     return data
 
 def generatehtml(data, path):
