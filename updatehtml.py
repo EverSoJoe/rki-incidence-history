@@ -23,7 +23,7 @@ def getdata(file):
     data = {}
     negCol = -1
     while data == {}:
-        if sheet[5][negCol] == None:
+        if sheet[5][negCol].value == None:
             negCol -= 1
         else:
             data['date'] = sheet[5][(negCol-14):negCol]
