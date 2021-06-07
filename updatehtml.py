@@ -26,8 +26,10 @@ def getdata(file):
         negCol = -2
         while sheet[5][negCol].value == None:
             negCol -= 1
+        negCol += 1
     else:
         negCol = None
+
     date = sheet[5][((0 if negCol == None else negCol)-14):negCol]
     data['date'] = [x.value for x in date][::-1]
 
