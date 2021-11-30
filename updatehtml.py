@@ -99,7 +99,7 @@ def generatehtml(data, path):
                 elif data[lk][i] <= 500:
                     color = "red"
                 elif data[lk][i] <= 1000:
-                    color = "ping"
+                    color = "pink"
                 else:
                     color = "purple"
                 f.write('           <tr>\n')
