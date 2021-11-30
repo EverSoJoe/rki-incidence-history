@@ -63,6 +63,12 @@ def generatehtml(data, path):
             '           table {',
             '               margin: 1em auto;',
             '           }',
+            '           .purple {',
+            '               color: #B294BB;',
+            '           }',
+            '           .pink {',
+            '               color: #D75F95;',
+            '           }',
             '           .red {',
             '               color: #CC6666;',
             '           }',
@@ -90,8 +96,12 @@ def generatehtml(data, path):
                     color = "green"
                 elif data[lk][i] <= 100:
                     color = "orange"
-                else:
+                elif data[lk][i] <= 500:
                     color = "red"
+                elif data[lk][i] <= 1000:
+                    color = "ping"
+                else:
+                    color = "purple"
                 f.write('           <tr>\n')
                 f.write('               <th>%s</th>\n' %(data['date'][i].strftime("%d.%m.")))
                 f.write('               <th class="%s">%1.2f</th>\n' %(color, data[lk][i]))
